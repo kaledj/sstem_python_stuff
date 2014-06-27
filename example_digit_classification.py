@@ -17,8 +17,8 @@ digits = datasets.load_digits()
 # attribute of the dataset. If we were working from image files, we
 # could load them using pylab.imread. For these images know which
 # digit they represent: it is given in the 'target' of the dataset.
-for index, (image, label) in enumerate(zip(digits.images, digits.target)[:4]):
-    pl.subplot(2, 4, index + 1)
+for index, (image, label) in enumerate(zip(digits.images, digits.target)[:6]):
+    pl.subplot(2, 6, index + 1)
     pl.axis('off')
     pl.imshow(image, cmap=pl.cm.gray_r, interpolation='nearest')
     pl.title('Training: %i' % label)
@@ -43,8 +43,8 @@ print("Classification report for classifier %s:\n%s\n"
 print("Confusion matrix:\n%s" % metrics.confusion_matrix(expected, predicted))
 
 for index, (image, prediction) in enumerate(
-        zip(digits.images[n_samples / 2:], predicted)[:4]):
-    pl.subplot(2, 4, index + 5)
+        zip(digits.images[n_samples / 2:], predicted)[:6]):
+    pl.subplot(2, 6, index + 7)
     pl.axis('off')
     pl.imshow(image, cmap=pl.cm.gray_r, interpolation='nearest')
     pl.title('Prediction: %i' % prediction)
