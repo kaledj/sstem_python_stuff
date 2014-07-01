@@ -40,7 +40,7 @@ def distanceAndClassify(y):
 # Load the digits dataset
 digits = datasets.load_digits()
 print(digits.images)
-<<<<<<< HEAD
+
 numlist1 = []
 numlist2 = []
 numlist3 = []
@@ -51,13 +51,13 @@ numlist7 = []
 numlist8 = []
 numlist9 = []
 numlist0 = []
-=======
+
 
 '''
  K-Means clustering
 '''
 
->>>>>>> origin/master
+
 # Randomly initialize solution as vectors of means m(t=0)=[m1...mk] 
 m = np.empty((10, 64))
 for i in range(0, 10):
@@ -66,7 +66,6 @@ for i in range(0, 10):
 
 # Classify input data according to m(t=0)
 for image in digits.images:
-<<<<<<< HEAD
 	distanceAndClassify(image.flatten())
 
 print len(numlist0)
@@ -83,9 +82,9 @@ print len(numlist9)
 
 	
  
-=======
-	print image
-	print distance(1, 5)
+
+	#print image
+	#print distance(1, 5)
 
 # Use classification to compute m(t+1) 
 
@@ -95,4 +94,4 @@ print len(numlist9)
 
 if __name__ == '__main__':
 	main()
->>>>>>> origin/master
+
