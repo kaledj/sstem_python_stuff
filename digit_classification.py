@@ -15,25 +15,25 @@ def distanceAndClassify(y):
 		dis[z] = np.sqrt(dis[z])
 	lowest = np.argmin(dis)
 	if lowest == 0:
-		numlist0.append(y)
+		numlist[0].append(y)
 	elif lowest == 1:
-		numlist1.append(y)
+		numlist[1].append(y)
 	elif lowest == 2:
-		numlist2.append(y)
+		numlist[2].append(y)
 	elif lowest == 3:
-		numlist3.append(y)
+		numlist[3].append(y)
 	elif lowest == 4:
-		numlist4.append(y)
+		numlist[4].append(y)
 	elif lowest == 5:
-		numlist5.append(y)
+		numlist[5].append(y)
 	elif lowest == 6:
-		numlist6.append(y)
+		numlist[6].append(y)
 	elif lowest == 7:
-		numlist7.append(y)
+		numlist[7].append(y)
 	elif lowest == 8:
-		numlist8.append(y)
+		numlist[8].append(y)
 	else:
-		numlist9.append(y)
+		numlist[9].append(y)
 ## THANKS SCOTT
 
 
@@ -41,17 +41,9 @@ def distanceAndClassify(y):
 digits = datasets.load_digits()
 print(digits.images)
 
-numlist1 = []
-numlist2 = []
-numlist3 = []
-numlist4 = []
-numlist5 = []
-numlist6 = []
-numlist7 = []
-numlist8 = []
-numlist9 = []
-numlist0 = []
-
+numlist = []
+for nl in range(0, 10):
+	numlist.append([])
 
 '''
  K-Means clustering
@@ -68,16 +60,16 @@ for i in range(0, 10):
 for image in digits.images:
 	distanceAndClassify(image.flatten())
 
-print len(numlist0)
-print len(numlist1)
-print len(numlist2)
-print len(numlist3)
-print len(numlist4)
-print len(numlist5)
-print len(numlist6)
-print len(numlist7)
-print len(numlist8)
-print len(numlist9)
+print len(numlist[0])
+print len(numlist[1])
+print len(numlist[2])
+print len(numlist[3])
+print len(numlist[4])
+print len(numlist[5])
+print len(numlist[6])
+print len(numlist[7])
+print len(numlist[8])
+print len(numlist[9])
 
 
 	
