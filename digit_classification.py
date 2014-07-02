@@ -22,6 +22,7 @@ def distanceAndClassify(y):
 # Load the digits dataset
 digits = datasets.load_digits()
 print(digits.images)
+pl.imshow(digits.images[0])
 
 numlist = []
 for nl in range(0, 10):
@@ -34,17 +35,31 @@ for nl in range(0, 10):
 
 # Randomly initialize solution as vectors of means m(t=0)=[m1...mk] 
 m = np.empty((10, 64))
+mlast = np.empty((10, 64))
 for i in range(0, 10):
     m[i] = np.random.random_integers(0, 16, 64)
 #print(m[0:])
 
-# Classify input data according to m(t=0)
-for image in digits.images:
-    distanceAndClassify(image.flatten())
+converged = False
+while not converged:
+    # Classify input data according to m(t=0)
+    for image in digits.images:
+        distanceAndClassify(image.flatten())
 
-for l in numlist:
-    print len(l)
+    # Recompputed the vector of means
+    for i in range(10):
+        mlast[i] = m[i]
+        if len(numlist[i]) > 0:
+            m[i] = (np.average(numlist[i], axis=0).astype(np.dtype(np.int16)))
+    print ("Trying...")
+    if np.any(abs(m - mlast)) == 0:
+        converged = True
+        print (abs(m - mlast))
 
+#for l in numlist:
+    #print len(l)
+    #if len(l) > 0:
+        #print (np.average(l, axis=0).astype(np.dtype(np.int16)))
 
 #print image
 #print distance(1, 5)
