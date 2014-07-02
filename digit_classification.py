@@ -69,6 +69,7 @@ for i in range(0, 10):
 for image in digits.images:
     distanceAndClassify(image.flatten())
 
+
 print len(numlist0)
 print len(numlist1)
 print len(numlist2)
@@ -80,9 +81,7 @@ print len(numlist7)
 print len(numlist8)
 print len(numlist9)
 
-
-
-
+print(np.average(numlist0, axis=0).astype(np.dtype(np.int16)))
 
 #print image
 #print distance(1, 5)
