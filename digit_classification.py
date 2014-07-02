@@ -14,45 +14,18 @@ def distanceAndClassify(y):
             dis[z] += d1
         dis[z] = np.sqrt(dis[z])
     lowest = np.argmin(dis)
-    if lowest == 0:
-        numlist0.append(y)
-    elif lowest == 1:
-        numlist1.append(y)
-    elif lowest == 2:
-        numlist2.append(y)
-    elif lowest == 3:
-        numlist3.append(y)
-    elif lowest == 4:
-        numlist4.append(y)
-    elif lowest == 5:
-        numlist5.append(y)
-    elif lowest == 6:
-        numlist6.append(y)
-    elif lowest == 7:
-        numlist7.append(y)
-    elif lowest == 8:
-        numlist8.append(y)
-    else:
-        numlist9.append(y)
+    numlist[lowest].append(y)
 
 ## THANKS SCOTT
 ## WELCOME KALE
-
 
 # Load the digits data set
 digits = datasets.load_digits()
 print(digits.images)
 
-numlist1 = []
-numlist2 = []
-numlist3 = []
-numlist4 = []
-numlist5 = []
-numlist6 = []
-numlist7 = []
-numlist8 = []
-numlist9 = []
-numlist0 = []
+numlist = []
+for nl in range(0, 10):
+    numlist.append([])
 
 '''
  K-Means clustering
@@ -61,35 +34,30 @@ numlist0 = []
 
 # Randomly initialize solution as vectors of means m(t=0)=[m1...mk] 
 m = np.empty((10, 64))
+mlast = np.empty((10, 64))
 for i in range(0, 10):
     m[i] = np.random.random_integers(0, 16, 64)
 #print(m[0:])
 
-# Classify input data according to m(t=0)
-for image in digits.images:
-    distanceAndClassify(image.flatten())
+converged = False
+attemptnum = 0
+while not converged:
+    # Classify input data according to m(t=0)
+    for image in digits.images:
+        distanceAndClassify(image.flatten())
 
+    # Recomputed the vector of means
+    for i in range(10):
+        mlast[i] = m[i]
+        if len(numlist[i]) > 0:
+            m[i] = (np.average(numlist[i], axis=0).astype(np.dtype(np.int16)))
+    print "Attempt: %d" % attemptnum
+    attemptnum += 1
+    if np.any(abs(m - mlast)) == 0:
+        converged = True
+        print (abs(m - mlast))
 
-print len(numlist0)
-print len(numlist1)
-print len(numlist2)
-print len(numlist3)
-print len(numlist4)
-print len(numlist5)
-print len(numlist6)
-print len(numlist7)
-print len(numlist8)
-print len(numlist9)
-
-print(np.average(numlist0, axis=0).astype(np.dtype(np.int16)))
-
-#print image
-#print distance(1, 5)
-
-# Use classification to compute m(t+1) 
-
-# Update t = t + 1
-
-# Check for convergence ||m(t) - m(t-1)|| < convergence threshold
-
-
+for i in range(10):
+    pl.subplot(2, 5, i + 1)
+    pl.imshow(m[i].reshape((8, 8)), cmap=pl.cm.gray_r, interpolation='nearest')
+pl.show()
