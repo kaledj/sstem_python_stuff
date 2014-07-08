@@ -1,6 +1,7 @@
 import pylab as pl
 import numpy as np
 from sklearn import datasets
+from numpy import random
 
 
 # #
@@ -31,7 +32,16 @@ digits = datasets.load_digits()
 m = np.empty((10, 64))
 mlast = np.empty((10, 64))
 for i in range(0, 10):
-    m[i] = np.random.random_integers(0, 16, 64)
+    #m[i] = np.random.random_integers(0, 16, 64)
+    rand_sample = random.randint(0, len(digits.images))
+    m[i] = digits.images[rand_sample].flatten()
+
+for i in range(10):
+    pl.subplot(2, 5, i + 1)
+    pl.imshow(m[i].reshape((8, 8)), cmap=pl.cm.gray_r, interpolation='nearest')
+    #pl.imshow(digits.images[i], cmap=pl.cm.gray_r, interpolation='nearest')
+pl.show()
+
 
 converged = False
 attemptnum = 0
