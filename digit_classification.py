@@ -1,49 +1,38 @@
-import pylab as pl 
+import pylab as pl
 import numpy as np
 from sklearn import datasets
+from sklearn import metrics
+from sklearn.cluster import KMeans
+from numpy import random
 
 
-##
-##	SCOTT WRITE HELPER FUNCTIONS PLS TYHNANZ
+# #
+# #	SCOTT WRITE HELPER FUNCTIONS PLS THANKS
 ##
 def distanceAndClassify(y):
-	dis = np.zeros(10)
-	for z in range(0,10):
-		for q in range(0,64):
-			d1 = int(np.absolute(m[z][q] - y[q]))^2
-			dis[z] += d1
-		dis[z] = np.sqrt(dis[z])
-	lowest = np.argmin(dis)
-	if lowest == 0:
-		numlist[0].append(y)
-	elif lowest == 1:
-		numlist[1].append(y)
-	elif lowest == 2:
-		numlist[2].append(y)
-	elif lowest == 3:
-		numlist[3].append(y)
-	elif lowest == 4:
-		numlist[4].append(y)
-	elif lowest == 5:
-		numlist[5].append(y)
-	elif lowest == 6:
-		numlist[6].append(y)
-	elif lowest == 7:
-		numlist[7].append(y)
-	elif lowest == 8:
-		numlist[8].append(y)
-	else:
-		numlist[9].append(y)
+    dis = np.zeros(10)
+    for z in range(10):
+        for q in range(64):
+            d1 = (m[z][q] - y[q]) ** 2
+            dis[z] += d1
+        dis[z] = np.sqrt(dis[z])
+    return np.argmin(dis)
+
+def score(q,r):
+    estimate = KMeans(init='k-means++', n_clusters=10, n_init=10)
+    estimator = estimate.fit(q)
+    print ('Adj. Mutual Info Score: %.3f' % (metrics.adjusted_mutual_info_score(r, estimator.labels_)))
+    print ('Norm Mutual Info Score: %.3f' % (metrics.normalized_mutual_info_score(r, estimator.labels_)))
+    print ('Adj. Rand Score: %.3f' % (metrics.adjusted_rand_score(r, estimator.labels_)))
+    print ('Silhouette Score: %.3f' % (metrics.silhouette_score(q, estimator.labels_, metric = 'euclidean')))
+    
+
 ## THANKS SCOTT
+## WELCOME KALE
 
-
-# Load the digits dataset
+# Load the digits data set
 digits = datasets.load_digits()
-print(digits.images)
-
-numlist = []
-for nl in range(0, 10):
-	numlist.append([])
+#print(digits.images)
 
 '''
  K-Means clustering
@@ -52,38 +41,51 @@ for nl in range(0, 10):
 
 # Randomly initialize solution as vectors of means m(t=0)=[m1...mk] 
 m = np.empty((10, 64))
+mlast = np.empty((10, 64))
 for i in range(0, 10):
-	m[i] = np.random.random_integers(0, 16, 64)
-#print(m[0:])
+    #m[i] = np.random.random_integers(0, 16, 64)
+    rand_sample = random.randint(0, len(digits.images))
+    m[i] = digits.images[rand_sample].flatten()
 
-# Classify input data according to m(t=0)
-for image in digits.images:
-	distanceAndClassify(image.flatten())
-
-print len(numlist[0])
-print len(numlist[1])
-print len(numlist[2])
-print len(numlist[3])
-print len(numlist[4])
-print len(numlist[5])
-print len(numlist[6])
-print len(numlist[7])
-print len(numlist[8])
-print len(numlist[9])
+for i in range(10):
+    pl.subplot(2, 5, i + 1)
+    pl.imshow(m[i].reshape((8, 8)), cmap=pl.cm.gray_r, interpolation='nearest')
+    #pl.imshow(digits.images[i], cmap=pl.cm.gray_r, interpolation='nearest')
+pl.show()
 
 
-	
- 
+converged = False
+attemptnum = 0
+while not converged:
+    # Initialize classification lists for current step
+    numlist = []
+    for i in range(0, 10):
+        numlist.append([])
+    print "Attempt : %d" % attemptnum
+    print numlist
 
-	#print image
-	#print distance(1, 5)
+    # Classify input data according to m(t=0)
+    for image in digits.images:
+        closest = distanceAndClassify(image.flatten())
+        numlist[closest].append(image.flatten())
 
-# Use classification to compute m(t+1) 
+    # Recomputed the vector of means
+    mlast = m.copy()
+    for i in range(10):
+        if len(numlist[i]) > 0:
+            print len(numlist[i])
+            m[i].put(range(64), np.average(numlist[i], axis=0).astype(np.dtype(np.int32)))
+            print type(m[i])
+    print "Attempt: %d" % attemptnum
+    attemptnum += 1
+    if np.any(m - mlast) == 0:
+        converged = True
 
-# Update t = t + 1
+for i in range(10):
+    pl.subplot(2, 5, i + 1)
+    pl.imshow(m[i].reshape((8, 8)), cmap=pl.cm.gray_r, interpolation='nearest')
+    #pl.imshow(digits.images[i], cmap=pl.cm.gray_r, interpolation='nearest')
+pl.show()
 
-# Check for convergence ||m(t) - m(t-1)|| < convergence threshold
-
-if __name__ == '__main__':
-	main()
+score(digits.data, digits.target)
 
