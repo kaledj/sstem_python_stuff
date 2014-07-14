@@ -1,5 +1,6 @@
 import pylab as pl
 import numpy as np
+import cProfile, pstats, StringIO
 from sklearn import datasets
 from sklearn import metrics
 from sklearn.decomposition import PCA
@@ -10,6 +11,8 @@ from numpy import random
 # #
 # #	SCOTT WRITE HELPER FUNCTIONS PLS THANKS
 # #
+pr = cProfile.Profile()
+pr.enable()
 def distanceAndClassify(y):
     dis = np.zeros(10)
     for z in range(10):
@@ -98,3 +101,8 @@ pl.show()
 
 score(numlist)
 
+pr.disable()
+string = StringIO.StringIO()
+ps = pstats.Stats(pr, stream=string).sort_stats('time')
+ps.print_stats()
+print string.getvalue()
