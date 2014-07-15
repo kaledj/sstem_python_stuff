@@ -16,12 +16,13 @@ pr.enable()
 def distanceAndClassify(y):
     dis = np.zeros(10)
     for z in range(10):
-        for q in range(64):
-            d1 = (m[z][q] - y[q]) ** 2
-            dis[z] += d1
-        dis[z] = np.sqrt(dis[z])
+     #   for q in range(64):
+      #      d1 = (m[z][q] - y[q]) ** 2
+       #     dis[z] += d1
+        #dis[z] = np.sqrt(dis[z])
+        dis[z] = np.sqrt(np.sum((m[z] - y) ** 2))
     return np.argmin(dis)
-
+   
 
 def score(clusterlist):
     images = np.zeros((len(digits.images), 64))
