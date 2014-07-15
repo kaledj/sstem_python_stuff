@@ -33,8 +33,8 @@ def score(clusterlist):
             images[count] = x0
             labels[count] = x1
             count += 1
-    estimate = KMeans(init='random', n_clusters=10)
-    estimator = estimate.fit(digits.data)
+    #estimate = KMeans(init='random', n_clusters=10)
+    #estimator = estimate.fit(digits.data)
     print ('Adj. Mutual Info Score: %.3f' % (metrics.adjusted_mutual_info_score(digits.target, labels)))
     print ('Norm Mutual Info Score: %.3f' % (metrics.normalized_mutual_info_score(digits.target, labels)))
     print ('Adj. Rand Score: %.3f' % (metrics.adjusted_rand_score(digits.target, labels)))
