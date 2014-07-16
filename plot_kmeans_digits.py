@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 ===========================================================
 A demo of K-Means clustering on the handwritten digits data
@@ -25,6 +26,8 @@ silhouette   silhouette coefficient
 =========== ========================================================
 
 """
+=======
+>>>>>>> origin/test-with-stats
 print(__doc__)
 
 from time import time
